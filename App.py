@@ -1,431 +1,452 @@
 import streamlit as st
 import time
 
-st.set_page_config(page_title="Our Christmas Trip ✈️", page_icon="🎄", layout="centered")
+st.set_page_config(page_title="Christmas Trip 🎄", page_icon="🎄", layout="centered")
 
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;600&display=swap');
 
-html, body, [class*="css"] {
-    font-family: 'Inter', sans-serif !important;
-    background-color: #faf7f2 !important;
-    color: #1a1614 !important;
-}
-.stApp { background-color: #faf7f2; }
+html, body, [class*="css"] { font-family: 'DM Sans', sans-serif !important; }
+.stApp { background: #0f0f0f; color: #f5f0e8; }
 #MainMenu, footer, header { visibility: hidden; }
-.block-container { padding-top: 3rem; max-width: 680px; }
+.block-container { padding-top: 2rem; max-width: 700px; }
 
-.gift-header {
-    text-align: center;
-    padding: 40px 24px 32px;
+/* Progress bar */
+.prog-wrap { display: flex; gap: 6px; margin-bottom: 32px; }
+.prog-seg {
+    height: 3px; flex: 1; border-radius: 2px;
+    background: #2a2a2a;
+    transition: background 0.4s;
 }
-.gift-tag {
-    display: inline-block;
-    background: #c8392b;
-    color: white;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    padding: 5px 14px;
-    border-radius: 2px;
-    margin-bottom: 20px;
-}
-.gift-title {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2rem, 6vw, 3rem);
-    font-weight: 900;
-    color: #1a1614;
-    line-height: 1.15;
-    margin-bottom: 14px;
-}
-.gift-title em { color: #c8392b; font-style: italic; }
-.gift-sub {
-    font-size: 15px;
-    color: #6b6460;
-    line-height: 1.6;
-    max-width: 420px;
-    margin: 0 auto;
-}
+.prog-seg.done { background: #e8c14e; }
+.prog-seg.active { background: #e8c14e; opacity: 0.5; }
 
-.question-label {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.35rem;
-    font-weight: 700;
-    color: #1a1614;
-    margin-bottom: 6px;
-}
-.question-sub {
-    font-size: 13px;
-    color: #8a7f7a;
-    margin-bottom: 20px;
-    line-height: 1.5;
-}
+/* Question */
+.q-num { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; color: #e8c14e; text-transform: uppercase; margin-bottom: 10px; }
+.q-text { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 700; color: #f5f0e8; line-height: 1.25; margin-bottom: 6px; }
+.q-sub { font-size: 13px; color: #666; margin-bottom: 28px; line-height: 1.6; }
 
+/* Radio override */
+div[data-testid="stRadio"] > div { gap: 8px !important; }
 div[data-testid="stRadio"] label {
-    font-family: 'Inter', sans-serif !important;
-    font-size: 15px !important;
-    color: #2a2220 !important;
-    padding: 2px 0 !important;
-}
-
-.stButton > button {
-    background: #1a1614 !important;
-    border: none !important;
-    color: #faf7f2 !important;
-    font-family: 'Inter', sans-serif !important;
+    background: #1a1a1a !important;
+    border: 1px solid #2a2a2a !important;
+    border-radius: 8px !important;
+    padding: 14px 18px !important;
     font-size: 14px !important;
-    font-weight: 600 !important;
-    letter-spacing: 0.04em !important;
-    border-radius: 4px !important;
-    padding: 12px 32px !important;
+    color: #c8c0b0 !important;
+    cursor: pointer !important;
     transition: all 0.2s !important;
+    display: block !important;
     width: 100% !important;
 }
-.stButton > button:hover {
-    background: #c8392b !important;
-    transform: translateY(-1px) !important;
-}
+div[data-testid="stRadio"] label:hover { border-color: #e8c14e !important; color: #f5f0e8 !important; }
 
-.divider {
-    border: none;
-    border-top: 1px solid #e8e2da;
-    margin: 28px 0;
+/* Button */
+.stButton > button {
+    background: #e8c14e !important; border: none !important;
+    color: #0f0f0f !important; font-family: 'DM Sans', sans-serif !important;
+    font-size: 14px !important; font-weight: 600 !important;
+    border-radius: 6px !important; padding: 12px 28px !important;
+    width: 100% !important; margin-top: 16px !important;
+    transition: all 0.2s !important;
 }
+.stButton > button:hover { background: #f0ce6a !important; transform: translateY(-1px) !important; }
 
-/* City result card */
-.city-card {
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 16px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+/* Result */
+.reveal-label { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; color: #e8c14e; text-transform: uppercase; text-align: center; margin-bottom: 12px; }
+.city-hero { position: relative; border-radius: 16px; overflow: hidden; margin-bottom: 0; }
+.city-hero img { width: 100%; height: 280px; object-fit: cover; display: block; filter: brightness(0.75); }
+.city-hero-overlay {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 32px 28px 24px;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
 }
-.city-img {
-    width: 100%;
-    height: 220px;
-    object-fit: cover;
-    display: block;
-}
-.city-card-body {
-    background: white;
-    padding: 20px 22px 22px;
-}
-.city-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.6rem;
-    font-weight: 900;
-    color: #1a1614;
-    margin-bottom: 4px;
-}
-.city-meta {
-    font-size: 12px;
-    color: #8a7f7a;
-    letter-spacing: 0.05em;
-    margin-bottom: 12px;
-}
-.city-desc {
-    font-size: 14px;
-    color: #3a3230;
-    line-height: 1.65;
-    margin-bottom: 14px;
-}
-.city-highlight {
-    background: #fdf3f2;
-    border-left: 3px solid #c8392b;
-    padding: 10px 14px;
-    font-size: 13px;
-    color: #6b2020;
-    line-height: 1.5;
-    border-radius: 0 4px 4px 0;
-}
+.city-hero-name { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 900; color: #fff; line-height: 1; margin-bottom: 6px; }
+.city-hero-meta { font-size: 12px; color: rgba(255,255,255,0.6); letter-spacing: 0.04em; }
 
-.runner-up {
-    background: white;
-    border-radius: 10px;
-    padding: 16px 20px;
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-}
-.runner-up-img {
-    width: 72px;
-    height: 72px;
-    border-radius: 8px;
-    object-fit: cover;
-    flex-shrink: 0;
-}
-.runner-up-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: #1a1614;
-    margin-bottom: 3px;
-}
-.runner-up-desc { font-size: 12px; color: #8a7f7a; line-height: 1.5; }
+.city-body { background: #1a1a1a; border-radius: 0 0 16px 16px; padding: 22px 24px 24px; margin-bottom: 24px; }
+.city-desc { font-size: 15px; color: #c8c0b0; line-height: 1.75; margin-bottom: 18px; }
+.city-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.pill { background: #252525; border: 1px solid #333; border-radius: 20px; padding: 5px 14px; font-size: 12px; color: #999; }
+.why-box { background: #111; border-left: 3px solid #e8c14e; padding: 14px 16px; border-radius: 0 6px 6px 0; font-size: 13px; color: #b8a878; line-height: 1.6; }
 
-.final-note {
-    text-align: center;
-    padding: 28px 20px 40px;
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem;
-    font-style: italic;
-    color: #6b6460;
-}
-.final-note strong { color: #c8392b; font-style: normal; }
+.others-label { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; color: #555; text-transform: uppercase; margin: 28px 0 14px; }
+.runner { display: flex; align-items: center; gap: 16px; background: #151515; border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid #222; }
+.runner img { width: 64px; height: 64px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
+.runner-name { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: #f5f0e8; margin-bottom: 3px; }
+.runner-sub { font-size: 12px; color: #555; line-height: 1.5; }
+
+.footer-note { text-align: center; padding: 32px 0 48px; font-family: 'Playfair Display', serif; font-size: 1rem; font-style: italic; color: #555; }
+.footer-note span { color: #e8c14e; }
 </style>
 """, unsafe_allow_html=True)
 
-# ── City data with real Unsplash photos ──
 CITIES = {
     "New York": {
         "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Southwest_corner_of_Central_Park%2C_looking_east%2C_NYC.jpg/1280px-Southwest_corner_of_Central_Park%2C_looking_east%2C_NYC.jpg",
         "thumb": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Southwest_corner_of_Central_Park%2C_looking_east%2C_NYC.jpg/400px-Southwest_corner_of_Central_Park%2C_looking_east%2C_NYC.jpg",
-        "tags": ["food", "nightlife", "culture"],
-        "weather": ["cold"],
-        "desc": "Holiday windows on 5th Ave, Bryant Park ice rink, the best food scene in the country. Christmas in New York is a whole thing.",
-        "highlight": "✈️ ~3h from Houston · ❄️ 32–45°F · 💸 $$$$",
-        "score_base": 0,
+        "meta": "~3h flight · 32–45°F · $$$$",
+        "desc": "Holiday windows on 5th Ave, Bryant Park ice rink, the most alive city in the country at Christmas. Dense, loud, expensive, and completely worth it.",
+        "pills": ["🗽 Iconic", "❄️ Real winter", "🍕 Best food scene", "🎭 Culture overload"],
+        "tags": ["food", "nightlife", "culture", "cold"],
     },
     "Denver": {
         "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Denver_skyline_from_City_Park_2.jpg/1280px-Denver_skyline_from_City_Park_2.jpg",
         "thumb": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Denver_skyline_from_City_Park_2.jpg/400px-Denver_skyline_from_City_Park_2.jpg",
-        "tags": ["outdoors", "food", "scenery"],
-        "weather": ["cold"],
-        "desc": "Waking up to actual snow on Christmas with the Rockies out the window. Holiday markets in LoDo, day trips to ski resorts, cozy mountain bars.",
-        "highlight": "✈️ ~2.5h from Houston · ❄️ 20–45°F · 💸 $$$",
-        "score_base": 0,
+        "meta": "~2.5h flight · 20–45°F · $$$",
+        "desc": "Snow on Christmas morning, Rockies out the window, day trips to ski resorts, cozy bars in LoDo. The most beautiful backdrop of any city on this list.",
+        "pills": ["🏔️ Mountains", "❄️ Actual snow", "⛷️ Ski day trips", "🍺 Great bars"],
+        "tags": ["outdoors", "scenery", "cold", "relaxed"],
     },
     "Nashville": {
         "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Nashville_Skyline_from_Bicentennial_Capitol_Mall_State_Park.jpg/1280px-Nashville_Skyline_from_Bicentennial_Capitol_Mall_State_Park.jpg",
         "thumb": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Nashville_Skyline_from_Bicentennial_Capitol_Mall_State_Park.jpg/400px-Nashville_Skyline_from_Bicentennial_Capitol_Mall_State_Park.jpg",
-        "tags": ["nightlife", "food", "music"],
-        "weather": ["mild"],
-        "desc": "Broadway lit up for Christmas, live music literally everywhere, hot chicken, and a food scene that surprises everyone. Most fun per dollar of any city on this list.",
-        "highlight": "✈️ ~1.5h from Houston · 🌤 35–50°F · 💸 $$",
-        "score_base": 0,
+        "meta": "~1.5h flight · 35–50°F · $$",
+        "desc": "Broadway never closes. Live music everywhere, hot chicken, honky tonks, rooftop bars. The most fun you can have for the least money on this list.",
+        "pills": ["🎵 Live music", "🍗 Hot chicken", "🕺 Best nightlife $", "🌙 Never sleeps"],
+        "tags": ["nightlife", "food", "music", "mild", "packed"],
     },
     "Chicago": {
         "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Chicago_wideangle_from_john_hancock.jpg/1280px-Chicago_wideangle_from_john_hancock.jpg",
         "thumb": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Chicago_wideangle_from_john_hancock.jpg/400px-Chicago_wideangle_from_john_hancock.jpg",
-        "tags": ["food", "culture", "architecture"],
-        "weather": ["cold"],
-        "desc": "The Christkindlmarket is a real German Christmas market in Millennium Park. Magnificent Mile covered in lights. World-class deep dish. Stunning architecture.",
-        "highlight": "✈️ ~2.5h from Houston · ❄️ 20–38°F · 💸 $$$",
-        "score_base": 0,
+        "meta": "~2.5h flight · 20–38°F · $$$",
+        "desc": "Real German Christmas market in Millennium Park, Magnificent Mile covered in lights, deep dish, and architecture that makes you stop mid-street. Underrated at the holidays.",
+        "pills": ["🎄 Christkindlmarket", "🏛️ Architecture", "🍕 Deep dish", "❄️ Feels like Christmas"],
+        "tags": ["food", "culture", "cold", "packed"],
     },
     "Atlanta": {
         "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Atlanta_from_Buckhead_2018.jpg/1280px-Atlanta_from_Buckhead_2018.jpg",
         "thumb": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Atlanta_from_Buckhead_2018.jpg/400px-Atlanta_from_Buckhead_2018.jpg",
-        "tags": ["food", "culture", "nightlife"],
-        "weather": ["mild"],
-        "desc": "Centennial Park lit up for the holidays, one of the best restaurant scenes in the South, easy direct flight from Houston. Underrated for a winter trip.",
-        "highlight": "✈️ ~2h from Houston · 🌤 38–55°F · 💸 $$",
-        "score_base": 0,
+        "meta": "~2h flight · 38–55°F · $$",
+        "desc": "One of the best food cities in the South, Centennial Park lit up for the holidays, great neighborhoods to walk around. Easy, affordable, no-stress trip.",
+        "pills": ["🍑 Southern food", "🌆 Great neighborhoods", "✈️ Easy direct flight", "😌 No crowds"],
+        "tags": ["food", "culture", "mild", "relaxed"],
     },
     "New Orleans": {
         "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/New_Orleans_French_Quarter.jpg/1280px-New_Orleans_French_Quarter.jpg",
         "thumb": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/New_Orleans_French_Quarter.jpg/400px-New_Orleans_French_Quarter.jpg",
-        "tags": ["food", "nightlife", "music", "culture"],
-        "weather": ["mild", "warm"],
-        "desc": "The French Quarter decorated for Christmas is something else. Best eating city in America — not debatable. Jazz clubs, cocktail bars, and a vibe you can't find anywhere else.",
-        "highlight": "✈️ ~1h from Houston · 🌤 48–62°F · 💸 $$",
-        "score_base": 0,
+        "meta": "~1h flight · 48–62°F · $$",
+        "desc": "The French Quarter at Christmas is decorated and alive. Best food city in America — full stop. Jazz pouring out of every bar, cocktails everywhere, a vibe that exists nowhere else.",
+        "pills": ["🎷 Jazz everywhere", "🦞 Best food in America", "🎉 Always a party", "🌶️ The vibe"],
+        "tags": ["food", "nightlife", "music", "warm", "packed"],
     },
 }
 
+QUESTIONS = [
+    {
+        "num": "01",
+        "text": "What does your ideal December weather look like?",
+        "sub": "Be honest — Houston has no winter so literally anything counts as a change.",
+        "options": [
+            ("❄️  Cold cold — I want snow, a coat, the real thing", "cold"),
+            ("🧥  Crisp — cool enough to feel like the holidays", "mild"),
+            ("☀️  Mild — I run cold, 50s is fine, please no frost", "warm"),
+        ]
+    },
+    {
+        "num": "02",
+        "text": "The trip is amazing. What made it?",
+        "sub": "Pick the one thing you'd be most upset about missing.",
+        "options": [
+            ("🍽️  The food — we ate our way through every neighborhood", "food"),
+            ("🌙  The nights out — we closed down more than one bar", "nightlife"),
+            ("🏔️  The scenery — views, fresh air, being outside", "outdoors"),
+            ("🎭  The culture — museums, history, architecture", "culture"),
+            ("🎵  The music — live sets, jazz clubs, honky tonks", "music"),
+        ]
+    },
+    {
+        "num": "03",
+        "text": "How packed is your perfect itinerary?",
+        "sub": "No wrong answer.",
+        "options": [
+            ("🔥  Max — new spot every few hours, no downtime", "packed"),
+            ("😌  Balanced — a couple things a day, no rushing", "balanced"),
+            ("🛋️  Easy — good food, slow mornings, no real schedule", "relaxed"),
+        ]
+    },
+    {
+        "num": "04",
+        "text": "Your travel style in one sentence:",
+        "sub": None,
+        "options": [
+            ("📸  I want photos that make people ask where we went", "scenic"),
+            ("🍜  I will eat at the most-hyped restaurant in every city", "foodie"),
+            ("🎉  I want a story to tell when we get back", "social"),
+            ("🌿  I want to come back actually rested", "chill"),
+        ]
+    },
+    {
+        "num": "05",
+        "text": "New York is on the list. Real talk:",
+        "sub": "It's the most magical Christmas city. It's also the most expensive.",
+        "options": [
+            ("💸  I want it — we'll figure out the budget", "nyc_yes"),
+            ("😅  Honestly... probably not this time", "nyc_maybe"),
+            ("🙅  Skip it, I want somewhere different anyway", "nyc_no"),
+        ]
+    },
+    {
+        "num": "06",
+        "text": "Last one. Pick your vibe:",
+        "sub": None,
+        "options": [
+            ("🏙️  Big city energy, tall buildings, always something happening", "bigcity"),
+            ("🎶  Somewhere with a music scene that actually slaps", "music_scene"),
+            ("🌄  Somewhere with a backdrop — scenery, nature, views", "nature"),
+            ("🥘  Somewhere I'll be thinking about the food for months", "food_obsessed"),
+        ]
+    },
+]
+
+def score_cities(answers):
+    scores = {c: 0 for c in CITIES}
+
+    weather = answers.get("q0")
+    priority = answers.get("q1")
+    energy = answers.get("q2")
+    style = answers.get("q3")
+    nyc = answers.get("q4")
+    vibe = answers.get("q5")
+
+    # Weather
+    if weather == "cold":
+        for c in ["New York", "Denver", "Chicago"]: scores[c] += 4
+        for c in ["Nashville", "Atlanta", "New Orleans"]: scores[c] -= 1
+    elif weather == "mild":
+        for c in ["Nashville", "Atlanta"]: scores[c] += 4
+        scores["New Orleans"] += 2
+        scores["Denver"] += 1
+    elif weather == "warm":
+        scores["New Orleans"] += 5
+        scores["Atlanta"] += 4
+        scores["Nashville"] += 3
+        for c in ["New York", "Denver", "Chicago"]: scores[c] -= 2
+
+    # Priority
+    if priority == "food":
+        scores["New Orleans"] += 4
+        scores["Nashville"] += 3
+        scores["Chicago"] += 3
+        scores["Atlanta"] += 3
+        scores["New York"] += 2
+        scores["Denver"] += 1
+    elif priority == "nightlife":
+        scores["Nashville"] += 5
+        scores["New Orleans"] += 4
+        scores["New York"] += 3
+        scores["Atlanta"] += 2
+        scores["Chicago"] += 2
+        scores["Denver"] += 0
+    elif priority == "outdoors":
+        scores["Denver"] += 7
+        scores["Nashville"] += 1
+        scores["New York"] += 1
+    elif priority == "culture":
+        scores["New York"] += 6
+        scores["Chicago"] += 5
+        scores["New Orleans"] += 3
+        scores["Atlanta"] += 2
+    elif priority == "music":
+        scores["Nashville"] += 7
+        scores["New Orleans"] += 5
+        scores["Chicago"] += 1
+        scores["Atlanta"] += 2
+
+    # Energy
+    if energy == "packed":
+        for c in ["New York", "Nashville", "New Orleans"]: scores[c] += 3
+        scores["Denver"] -= 1
+    elif energy == "balanced":
+        for c in ["Chicago", "Atlanta", "Denver"]: scores[c] += 2
+    elif energy == "relaxed":
+        scores["New Orleans"] += 2
+        scores["Denver"] += 3
+        scores["Atlanta"] += 3
+        for c in ["New York", "Nashville"]: scores[c] -= 1
+
+    # Travel style
+    if style == "scenic":
+        scores["Denver"] += 4
+        scores["New York"] += 2
+        scores["Chicago"] += 2
+    elif style == "foodie":
+        scores["New Orleans"] += 4
+        scores["Nashville"] += 3
+        scores["Chicago"] += 3
+        scores["Atlanta"] += 2
+        scores["New York"] += 2
+    elif style == "social":
+        scores["Nashville"] += 4
+        scores["New Orleans"] += 3
+        scores["New York"] += 3
+        scores["Chicago"] += 2
+    elif style == "chill":
+        scores["Denver"] += 3
+        scores["Atlanta"] += 3
+        scores["New Orleans"] += 2
+        for c in ["New York", "Nashville"]: scores[c] -= 1
+
+    # NYC question — this is the big one
+    if nyc == "nyc_yes":
+        scores["New York"] += 10
+    elif nyc == "nyc_maybe":
+        scores["New York"] -= 4
+        for c in ["Nashville", "Chicago", "Atlanta"]: scores[c] += 2
+    elif nyc == "nyc_no":
+        scores["New York"] -= 15
+        for c in ["Denver", "Nashville", "New Orleans"]: scores[c] += 3
+
+    # Final vibe
+    if vibe == "bigcity":
+        scores["New York"] += 4
+        scores["Chicago"] += 3
+        scores["Atlanta"] += 2
+    elif vibe == "music_scene":
+        scores["Nashville"] += 5
+        scores["New Orleans"] += 4
+        scores["Chicago"] += 1
+    elif vibe == "nature":
+        scores["Denver"] += 6
+        scores["Nashville"] += 1
+    elif vibe == "food_obsessed":
+        scores["New Orleans"] += 5
+        scores["Nashville"] += 3
+        scores["Chicago"] += 3
+        scores["Atlanta"] += 2
+        scores["New York"] += 2
+
+    return sorted(scores.items(), key=lambda x: x[1], reverse=True)
+
+def why_match(city_name, answers):
+    lines = {
+        "New York": "You said you want the real Christmas experience — Bryant Park ice rink, 5th Ave windows, holiday energy everywhere. NYC delivers that like nowhere else.",
+        "Denver": "The Rockies in December with actual snow hits different. You want scenery and a real winter — Denver's the answer.",
+        "Nashville": "Live music, late nights, great food, and your dollar goes twice as far as NYC. Nashville matches your energy perfectly.",
+        "Chicago": "A real Christmas market, stunning architecture, deep dish, and a city that feels like the holidays. Chicago's the underrated pick.",
+        "Atlanta": "Easy flight, great food, low-key vibe, no crowds. Atlanta gives you a great trip without the chaos.",
+        "New Orleans": "The French Quarter at Christmas, the best food in America, and jazz coming out of every door. NOLA fits your vibe.",
+    }
+    return lines.get(city_name, "")
+
+# ── State ──
 if "step" not in st.session_state:
     st.session_state.step = 0
 if "answers" not in st.session_state:
     st.session_state.answers = {}
 
-def advance():
+STEP = st.session_state.step
+TOTAL = len(QUESTIONS)
+
+def advance(key, val):
+    st.session_state.answers[key] = val
     st.session_state.step += 1
 
-STEP = st.session_state.step
-A = st.session_state.answers
-
 # ══════════════════════════════
-# STEP 0 — Intro
+# INTRO
 # ══════════════════════════════
 if STEP == 0:
     st.markdown("""
-    <div class="gift-header">
-        <div class="gift-tag">🎄 A gift from Marco</div>
-        <div class="gift-title">Where should we go<br>for <em>Christmas?</em></div>
-        <div class="gift-sub">Answer a few questions and I'll find the perfect city for us. Whatever you pick — I've got it handled. 🎁</div>
-    </div>
-    """, unsafe_allow_html=True)
-    st.button("Let's find our city →", on_click=advance)
-
-# ══════════════════════════════
-# STEP 1 — Weather
-# ══════════════════════════════
-elif STEP == 1:
-    st.markdown('<div class="question-label">What\'s your vibe for December weather?</div>', unsafe_allow_html=True)
-    st.markdown('<div class="question-sub">We\'re leaving Houston either way — question is how cold we\'re going.</div>', unsafe_allow_html=True)
-    choice = st.radio("", [
-        "❄️  Cold — I want actual winter, snow, the whole thing",
-        "🧥  Mild — cool and comfortable, not freezing",
-        "☀️  Warm — I run cold, keep it above 50°F",
-    ], label_visibility="collapsed")
-    st.markdown('<hr class="divider">', unsafe_allow_html=True)
-    st.button("Next →", on_click=lambda: (A.update({"weather": choice}), advance()))
-
-# ══════════════════════════════
-# STEP 2 — Priority
-# ══════════════════════════════
-elif STEP == 2:
-    st.markdown('<div class="question-label">What makes a trip great for you?</div>', unsafe_allow_html=True)
-    st.markdown('<div class="question-sub">Pick the one thing you\'d be most upset about missing.</div>', unsafe_allow_html=True)
-    choice = st.radio("", [
-        "🍽️  Food — we eat our way through every city",
-        "🌙  Nightlife — we\'re going out every night",
-        "🏔️  Outdoors — scenery, nature, fresh air",
-        "🎭  Culture — museums, architecture, history",
-        "🎵  Live music and entertainment",
-    ], label_visibility="collapsed")
-    st.markdown('<hr class="divider">', unsafe_allow_html=True)
-    st.button("Next →", on_click=lambda: (A.update({"priority": choice}), advance()))
-
-# ══════════════════════════════
-# STEP 3 — Energy
-# ══════════════════════════════
-elif STEP == 3:
-    st.markdown('<div class="question-label">How do you want to spend the days?</div>', unsafe_allow_html=True)
-    st.markdown('<div class="question-sub">No wrong answer — just honest.</div>', unsafe_allow_html=True)
-    choice = st.radio("", [
-        "🔥  Packed — new spot every few hours, sleep when we\'re home",
-        "😌  Balanced — a couple things a day, no rushing",
-        "🛋️  Relaxed — good food, walks, no real schedule",
-    ], label_visibility="collapsed")
-    st.markdown('<hr class="divider">', unsafe_allow_html=True)
-    st.button("Next →", on_click=lambda: (A.update({"energy": choice}), advance()))
-
-# ══════════════════════════════
-# STEP 4 — NYC check
-# ══════════════════════════════
-elif STEP == 4:
-    st.markdown('<div class="question-label">Last question — be honest.</div>', unsafe_allow_html=True)
-    st.markdown('<div class="question-sub">New York at Christmas is incredible. It\'s also expensive. Where\'s your head at?</div>', unsafe_allow_html=True)
-    choice = st.radio("", [
-        "💸  NYC or bust — we\'ll make it work",
-        "😅  I want it but realistically... probably not",
-        "🙅  Skip it, I want somewhere different",
-    ], label_visibility="collapsed")
-    st.markdown('<hr class="divider">', unsafe_allow_html=True)
-    st.button("Find our city 🎄", on_click=lambda: (A.update({"nyc": choice}), advance()))
-
-# ══════════════════════════════
-# STEP 5 — Computing
-# ══════════════════════════════
-elif STEP == 5:
-    st.markdown("""
-    <div style="text-align:center; padding: 60px 20px; font-family:'Playfair Display',serif; font-size:1.2rem; color:#6b6460; font-style:italic;">
-        Finding your city...
-    </div>
-    """, unsafe_allow_html=True)
-    time.sleep(1.2)
-    st.session_state.step = 6
-    st.rerun()
-
-# ══════════════════════════════
-# STEP 6 — Results
-# ══════════════════════════════
-elif STEP == 6:
-    weather = A.get("weather", "")
-    priority = A.get("priority", "")
-    energy = A.get("energy", "")
-    nyc = A.get("nyc", "")
-
-    scores = {c: 0 for c in CITIES}
-
-    # Weather
-    if "Cold" in weather:
-        for c in ["New York","Denver","Chicago"]: scores[c] += 3
-    elif "Mild" in weather:
-        for c in ["Nashville","Atlanta","New Orleans"]: scores[c] += 3
-    elif "Warm" in weather:
-        scores["New Orleans"] += 4; scores["Atlanta"] += 3; scores["Nashville"] += 2
-
-    # Priority
-    if "Food" in priority:
-        for c,v in [("New Orleans",5),("Nashville",4),("Chicago",3),("Atlanta",3),("New York",2)]: scores[c] += v
-    elif "Nightlife" in priority:
-        for c,v in [("New Orleans",5),("Nashville",4),("New York",3),("Atlanta",2),("Chicago",2)]: scores[c] += v
-    elif "Outdoors" in priority:
-        scores["Denver"] += 6; scores["New York"] += 1
-    elif "Culture" in priority:
-        for c,v in [("New York",5),("Chicago",4),("New Orleans",3)]: scores[c] += v
-    elif "Music" in priority:
-        scores["Nashville"] += 6; scores["New Orleans"] += 5; scores["Atlanta"] += 2
-
-    # Energy
-    if "Packed" in energy:
-        for c in ["New York","Nashville","New Orleans"]: scores[c] += 2
-    elif "Relaxed" in energy:
-        for c in ["New Orleans","Denver","Atlanta"]: scores[c] += 2
-
-    # NYC
-    if "NYC or bust" in nyc:
-        scores["New York"] += 8
-    elif "probably not" in nyc:
-        scores["New York"] -= 3
-    elif "Skip" in nyc:
-        scores["New York"] -= 12
-
-    ranked = sorted(scores.items(), key=lambda x: x[1], reverse=True)
-    top_name = ranked[0][0]
-    top = CITIES[top_name]
-    second_name = ranked[1][0]
-    second = CITIES[second_name]
-    third_name = ranked[2][0]
-    third = CITIES[third_name]
-
-    st.markdown(f"""
-    <div style="text-align:center; margin-bottom:28px;">
-        <div style="font-size:11px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#c8392b; margin-bottom:10px;">✈️ Your city is</div>
-        <div style="font-family:'Playfair Display',serif; font-size:2.4rem; font-weight:900; color:#1a1614; line-height:1.1;">{top_name}</div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown(f"""
-    <div class="city-card">
-        <img class="city-img" src="{top['photo']}" alt="{top_name}"/>
-        <div class="city-card-body">
-            <div class="city-name">{top_name}</div>
-            <div class="city-meta">{top['highlight']}</div>
-            <div class="city-desc">{top['desc']}</div>
+    <div style="padding: 60px 0 40px; text-align: center;">
+        <div style="font-size:48px; margin-bottom: 20px;">🎄</div>
+        <div style="font-size:11px; font-weight:600; letter-spacing:0.15em; color:#e8c14e; text-transform:uppercase; margin-bottom:16px;">A gift from Marco</div>
+        <div style="font-family:'Playfair Display',serif; font-size:clamp(2rem,6vw,2.8rem); font-weight:900; color:#f5f0e8; line-height:1.15; margin-bottom:18px;">
+            Where should we go<br>for Christmas?
+        </div>
+        <div style="font-size:14px; color:#666; max-width: 380px; margin: 0 auto 40px; line-height:1.7;">
+            6 questions. Real answers. Wherever you pick — I've already got it handled.
         </div>
     </div>
     """, unsafe_allow_html=True)
+    st.button("Let's go →", on_click=lambda: setattr(st.session_state, 'step', 1))
 
+# ══════════════════════════════
+# QUESTIONS
+# ══════════════════════════════
+elif 1 <= STEP <= TOTAL:
+    q = QUESTIONS[STEP - 1]
+
+    # Progress bar
+    segs = ""
+    for i in range(TOTAL):
+        cls = "done" if i < STEP - 1 else ("active" if i == STEP - 1 else "")
+        segs += f'<div class="prog-seg {cls}"></div>'
+    st.markdown(f'<div class="prog-wrap">{segs}</div>', unsafe_allow_html=True)
+
+    st.markdown(f'<div class="q-num">Question {q["num"]} of {TOTAL:02d}</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="q-text">{q["text"]}</div>', unsafe_allow_html=True)
+    if q["sub"]:
+        st.markdown(f'<div class="q-sub">{q["sub"]}</div>', unsafe_allow_html=True)
+
+    key = f"q{STEP-1}"
+    choice = st.radio("", [o[0] for o in q["options"]], label_visibility="collapsed", key=f"radio_{STEP}")
+
+    val = next(v for label, v in q["options"] if label == choice)
+    label = "Find our city 🎄" if STEP == TOTAL else "Next →"
+    st.button(label, on_click=lambda k=key, v=val: advance(k, v))
+
+# ══════════════════════════════
+# CALCULATING
+# ══════════════════════════════
+elif STEP == TOTAL + 1:
     st.markdown("""
-    <div style="font-size:12px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:#8a7f7a; margin: 24px 0 12px;">
-        Also worth considering
+    <div style="text-align:center; padding: 80px 20px;">
+        <div style="font-size:32px; margin-bottom:20px;">✨</div>
+        <div style="font-family:'Playfair Display',serif; font-size:1.3rem; color:#666; font-style:italic;">Finding your city...</div>
+    </div>
+    """, unsafe_allow_html=True)
+    time.sleep(1.5)
+    st.session_state.step += 1
+    st.rerun()
+
+# ══════════════════════════════
+# RESULTS
+# ══════════════════════════════
+elif STEP == TOTAL + 2:
+    ranked = score_cities(st.session_state.answers)
+    top_name, _ = ranked[0]
+    top = CITIES[top_name]
+
+    st.markdown('<div class="reveal-label">✈️ Your city is</div>', unsafe_allow_html=True)
+
+    st.markdown(f"""
+    <div class="city-hero">
+        <img src="{top['photo']}" alt="{top_name}"/>
+        <div class="city-hero-overlay">
+            <div class="city-hero-name">{top_name}</div>
+            <div class="city-hero-meta">{top['meta']}</div>
+        </div>
+    </div>
+    <div class="city-body">
+        <div class="city-desc">{top['desc']}</div>
+        <div class="city-pills">{''.join(f'<span class="pill">{p}</span>' for p in top['pills'])}</div>
+        <div class="why-box">💬 {why_match(top_name, st.session_state.answers)}</div>
     </div>
     """, unsafe_allow_html=True)
 
-    for name, data in [(second_name, second), (third_name, third)]:
+    st.markdown('<div class="others-label">The rest of the list</div>', unsafe_allow_html=True)
+
+    for name, score in ranked[1:4]:
+        city = CITIES[name]
         st.markdown(f"""
-        <div class="runner-up">
-            <img class="runner-up-img" src="{data['photo']}" alt="{name}"/>
+        <div class="runner">
+            <img src="{city['thumb']}" alt="{name}"/>
             <div>
-                <div class="runner-up-name">{name}</div>
-                <div class="runner-up-desc">{data['desc'][:90]}...</div>
+                <div class="runner-name">{name}</div>
+                <div class="runner-sub">{city['meta']}<br>{city['desc'][:80]}...</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
 
     st.markdown("""
-    <div class="final-note">
-        Whatever you pick — <strong>Marco's got it handled.</strong> 🎄
+    <div class="footer-note">
+        Whatever you pick — <span>Marco's got it handled.</span> 🎁
     </div>
     """, unsafe_allow_html=True)
 
-    if st.button("← Start over"):
+    if st.button("← Take it again"):
         st.session_state.step = 0
         st.session_state.answers = {}
         st.rerun()
