@@ -181,8 +181,8 @@ div[data-testid="stRadio"] label {
 # ── City data with real Unsplash photos ──
 CITIES = {
     "New York": {
-        "photo": "https://images.unsplash.com/photo-1518791841217-8f162f1912da?w=800&q=80",
-        "thumb": "https://images.unsplash.com/photo-1518791841217-8f162f1912da?w=200&q=80",
+        "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Southwest_corner_of_Central_Park%2C_looking_east%2C_NYC.jpg/1280px-Southwest_corner_of_Central_Park%2C_looking_east%2C_NYC.jpg",
+        "thumb": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Southwest_corner_of_Central_Park%2C_looking_east%2C_NYC.jpg/400px-Southwest_corner_of_Central_Park%2C_looking_east%2C_NYC.jpg",
         "tags": ["food", "nightlife", "culture"],
         "weather": ["cold"],
         "desc": "Holiday windows on 5th Ave, Bryant Park ice rink, the best food scene in the country. Christmas in New York is a whole thing.",
@@ -190,8 +190,8 @@ CITIES = {
         "score_base": 0,
     },
     "Denver": {
-        "photo": "https://images.unsplash.com/photo-1546156929-a4c0ac411f47?w=800&q=80",
-        "thumb": "https://images.unsplash.com/photo-1546156929-a4c0ac411f47?w=200&q=80",
+        "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Denver_skyline_from_City_Park_2.jpg/1280px-Denver_skyline_from_City_Park_2.jpg",
+        "thumb": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Denver_skyline_from_City_Park_2.jpg/400px-Denver_skyline_from_City_Park_2.jpg",
         "tags": ["outdoors", "food", "scenery"],
         "weather": ["cold"],
         "desc": "Waking up to actual snow on Christmas with the Rockies out the window. Holiday markets in LoDo, day trips to ski resorts, cozy mountain bars.",
@@ -199,8 +199,8 @@ CITIES = {
         "score_base": 0,
     },
     "Nashville": {
-        "photo": "https://images.unsplash.com/photo-1545419913-775e3a8a3c34?w=800&q=80",
-        "thumb": "https://images.unsplash.com/photo-1545419913-775e3a8a3c34?w=200&q=80",
+        "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Nashville_Skyline_from_Bicentennial_Capitol_Mall_State_Park.jpg/1280px-Nashville_Skyline_from_Bicentennial_Capitol_Mall_State_Park.jpg",
+        "thumb": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Nashville_Skyline_from_Bicentennial_Capitol_Mall_State_Park.jpg/400px-Nashville_Skyline_from_Bicentennial_Capitol_Mall_State_Park.jpg",
         "tags": ["nightlife", "food", "music"],
         "weather": ["mild"],
         "desc": "Broadway lit up for Christmas, live music literally everywhere, hot chicken, and a food scene that surprises everyone. Most fun per dollar of any city on this list.",
@@ -208,8 +208,8 @@ CITIES = {
         "score_base": 0,
     },
     "Chicago": {
-        "photo": "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&q=80",
-        "thumb": "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=200&q=80",
+        "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Chicago_wideangle_from_john_hancock.jpg/1280px-Chicago_wideangle_from_john_hancock.jpg",
+        "thumb": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Chicago_wideangle_from_john_hancock.jpg/400px-Chicago_wideangle_from_john_hancock.jpg",
         "tags": ["food", "culture", "architecture"],
         "weather": ["cold"],
         "desc": "The Christkindlmarket is a real German Christmas market in Millennium Park. Magnificent Mile covered in lights. World-class deep dish. Stunning architecture.",
@@ -217,8 +217,8 @@ CITIES = {
         "score_base": 0,
     },
     "Atlanta": {
-        "photo": "https://images.unsplash.com/photo-1575917649705-5b59aaa12e6b?w=800&q=80",
-        "thumb": "https://images.unsplash.com/photo-1575917649705-5b59aaa12e6b?w=200&q=80",
+        "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Atlanta_from_Buckhead_2018.jpg/1280px-Atlanta_from_Buckhead_2018.jpg",
+        "thumb": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Atlanta_from_Buckhead_2018.jpg/400px-Atlanta_from_Buckhead_2018.jpg",
         "tags": ["food", "culture", "nightlife"],
         "weather": ["mild"],
         "desc": "Centennial Park lit up for the holidays, one of the best restaurant scenes in the South, easy direct flight from Houston. Underrated for a winter trip.",
@@ -226,8 +226,8 @@ CITIES = {
         "score_base": 0,
     },
     "New Orleans": {
-        "photo": "https://images.unsplash.com/photo-1568454537842-d933259bb258?w=800&q=80",
-        "thumb": "https://images.unsplash.com/photo-1568454537842-d933259bb258?w=200&q=80",
+        "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/New_Orleans_French_Quarter.jpg/1280px-New_Orleans_French_Quarter.jpg",
+        "thumb": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/New_Orleans_French_Quarter.jpg/400px-New_Orleans_French_Quarter.jpg",
         "tags": ["food", "nightlife", "music", "culture"],
         "weather": ["mild", "warm"],
         "desc": "The French Quarter decorated for Christmas is something else. Best eating city in America — not debatable. Jazz clubs, cocktail bars, and a vibe you can't find anywhere else.",
