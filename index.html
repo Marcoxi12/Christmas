@@ -40,7 +40,7 @@ body {
   position: fixed;
   inset: 0;
   z-index: 0;
-  opacity: 0.18;
+  opacity: 0.55;
 }
 
 /* ── NOISE OVERLAY ── */
@@ -709,48 +709,48 @@ document.addEventListener('DOMContentLoaded', () => goTo('intro'));
 /* ── DATA ── */
 const CITIES = {
   Denver: {
-    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Denver_skyline_from_City_Park_2.jpg/1280px-Denver_skyline_from_City_Park_2.jpg",
-    thumb: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Denver_skyline_from_City_Park_2.jpg/320px-Denver_skyline_from_City_Park_2.jpg",
+    photo: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1280&q=85&fit=crop",
+    thumb: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=400&q=75&fit=crop",
     meta: "~2.5h flight  ·  20–45°F  ·  $$$",
     desc: "fly in, check into a spot in lodo, wake up to snow with the rockies right there. ski day trip if you want it. bars and restaurants at night. three days goes fast but it feels like you actually went somewhere.",
     tags: ["🏔️ mountains", "❄️ actual snow", "⛷️ ski day trips", "🍺 lodo nightlife", "📸 insane backdrop"],
     why: "you want scenery and a real winter — denver's the move. waking up to snow and the rockies behind the skyline is a different kind of christmas",
   },
   Chicago: {
-    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Chicago_wideangle_from_john_hancock.jpg/1280px-Chicago_wideangle_from_john_hancock.jpg",
-    thumb: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Chicago_wideangle_from_john_hancock.jpg/320px-Chicago_wideangle_from_john_hancock.jpg",
+    photo: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1280&q=85&fit=crop",
+    thumb: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=400&q=75&fit=crop",
     meta: "~2.5h flight  ·  20–38°F  ·  $$$",
     desc: "real german christmas market in millennium park, the magnificent mile covered in lights, deep dish that actually lives up to it, architecture everywhere you look. chicago goes crazy at christmas and nobody talks about it enough.",
     tags: ["🎄 christkindlmarket", "🏛️ architecture", "🍕 deep dish", "❄️ full christmas energy", "🌃 magnificent mile"],
     why: "real christmas market, stunning city, great food — chicago goes hard at the holidays. feels more like christmas than anywhere else on this list",
   },
   "New York": {
-    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Southwest_corner_of_Central_Park%2C_looking_east%2C_NYC.jpg/1280px-Southwest_corner_of_Central_Park%2C_looking_east%2C_NYC.jpg",
-    thumb: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Southwest_corner_of_Central_Park%2C_looking_east%2C_NYC.jpg/320px-Southwest_corner_of_Central_Park%2C_looking_east%2C_NYC.jpg",
+    photo: "https://images.unsplash.com/photo-1534430480872-3498386e7856?w=1280&q=85&fit=crop",
+    thumb: "https://images.unsplash.com/photo-1534430480872-3498386e7856?w=400&q=75&fit=crop",
     meta: "~3h flight  ·  32–45°F  ·  $$$$",
     desc: "bryant park ice rink friday night, 5th ave windows saturday, diner breakfast before the flight home. three days in nyc at christmas hits different.",
     tags: ["🗽 iconic", "❄️ real winter", "🍕 best food scene", "🎭 culture everywhere"],
     why: "you want the real christmas energy — nyc is the only city where that's actually true fr",
   },
   Nashville: {
-    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Nashville_Skyline_from_Bicentennial_Capitol_Mall_State_Park.jpg/1280px-Nashville_Skyline_from_Bicentennial_Capitol_Mall_State_Park.jpg",
-    thumb: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Nashville_Skyline_from_Bicentennial_Capitol_Mall_State_Park.jpg/320px-Nashville_Skyline_from_Bicentennial_Capitol_Mall_State_Park.jpg",
+    photo: "https://images.unsplash.com/photo-1545919982-f050a3a042e4?w=1280&q=85&fit=crop",
+    thumb: "https://images.unsplash.com/photo-1545919982-f050a3a042e4?w=400&q=75&fit=crop",
     meta: "~1.5h flight  ·  35–50°F  ·  $$",
     desc: "broadway friday night, hot chicken saturday, rooftop before the flight home. short flight, easy weekend, money goes further.",
     tags: ["🎵 live music", "🍗 hot chicken", "🕺 nightlife", "🌙 never sleeps"],
     why: "live music, late nights, great food — and it's half the price of nyc. nashville is built for exactly this kind of trip",
   },
   Atlanta: {
-    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Atlanta_from_Buckhead_2018.jpg/1280px-Atlanta_from_Buckhead_2018.jpg",
-    thumb: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Atlanta_from_Buckhead_2018.jpg/320px-Atlanta_from_Buckhead_2018.jpg",
+    photo: "https://images.unsplash.com/photo-1575917649705-5b59aaa12e6b?w=1280&q=85&fit=crop",
+    thumb: "https://images.unsplash.com/photo-1575917649705-5b59aaa12e6b?w=400&q=75&fit=crop",
     meta: "~2h flight  ·  38–55°F  ·  $$",
     desc: "direct flight, great food, easy to get around. no chaos, no overcrowding. solid weekend, good food, good vibes.",
     tags: ["🍑 southern food", "🌆 neighborhoods", "✈️ easy direct", "😌 low-key"],
     why: "easy flight, great food, no stress — atlanta is the underrated pick that still delivers",
   },
   "New Orleans": {
-    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/New_Orleans_French_Quarter.jpg/1280px-New_Orleans_French_Quarter.jpg",
-    thumb: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/New_Orleans_French_Quarter.jpg/320px-New_Orleans_French_Quarter.jpg",
+    photo: "https://images.unsplash.com/photo-1570197571499-166b36435e9f?w=1280&q=85&fit=crop",
+    thumb: "https://images.unsplash.com/photo-1570197571499-166b36435e9f?w=400&q=75&fit=crop",
     meta: "~1h flight  ·  48–62°F  ·  $$",
     desc: "one hour from houston, french quarter decorated for christmas, best food in america. three days in nola and you eat and drink better than anywhere else on this list.",
     tags: ["🎷 jazz everywhere", "🦞 best food in america", "🎉 always a party", "🌶️ the vibe"],
