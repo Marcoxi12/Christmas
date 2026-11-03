@@ -1,6 +1,17 @@
 <title>Our Christmas Trip</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500&display=swap" crossorigin>
+<style>
+  /* Fallback: if Google Fonts doesn't load, use system condensed fonts */
+  @supports not (font-family: 'Bebas Neue') {
+    .intro-headline, .q-heading, .choose-city-name, .result-name, .runner-name {
+      font-family: 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif !important;
+      letter-spacing: 0.06em !important;
+    }
+  }
+</style>
 
 <style>
 :root {
@@ -691,6 +702,9 @@ resizeCanvas();
 initFlakes();
 tickSnow();
 window.addEventListener('resize', () => { resizeCanvas(); initFlakes() });
+
+/* ── INIT ── */
+document.addEventListener('DOMContentLoaded', () => goTo('intro'));
 
 /* ── DATA ── */
 const CITIES = {
