@@ -923,10 +923,7 @@ function scoreAndRig(a) {
   else if(vib==='nature')s['Denver']+=7;
   else{s['New Orleans']+=4;s['Nashville']+=3;s['Chicago']+=4;s['Atlanta']+=2;s['New York']+=2}
 
-  const all = Object.entries(s).sort((a,b)=>b[1]-a[1]);
-  const dc = all.filter(([n])=>n==='Denver'||n==='Chicago');
-  const rest = all.filter(([n])=>n!=='Denver'&&n!=='Chicago');
-  return [...dc,...rest];
+  return Object.entries(s).sort((a,b)=>b[1]-a[1]);
 }
 
 /* ── CHOOSE ── */
